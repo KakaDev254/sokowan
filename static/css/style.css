@@ -1,0 +1,90 @@
+/* =========================================
+   SOKOWAN GLOBAL COLOR PALETTE
+   ========================================= */
+:root {
+    --brand-primary: #092328;   /* Deep Teal (Text & Footer) */
+    --brand-secondary: #12544F; /* Deep Green (Primary Buttons) */
+    --brand-accent: #2A835F;    /* Mid Green (Hover States) */
+    --brand-light: #8BBB92;     /* Soft Sage (Borders/Badges) */
+    --brand-bg: #F8FAF9;        /* Very light sage-tinted white for background */
+    --brand-card-bg: #FFFFFF;   /* Pure White for cards */
+}
+
+/* Base Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--brand-bg);
+    color: var(--brand-primary);
+}
+
+/* Navbar */
+.navbar-brand {
+    color: var(--brand-primary) !important;
+    font-weight: 700;
+}
+
+.navbar-custom {
+    border-bottom: 2px solid var(--brand-light);
+    background-color: var(--brand-card-bg);
+}
+
+/* Custom Backgrounds */
+.bg-brand-primary { background-color: var(--brand-primary) !important; }
+.bg-brand-secondary { background-color: var(--brand-secondary) !important; }
+.bg-brand-light { background-color: var(--brand-light) !important; }
+.bg-brand-card { background-color: var(--brand-card-bg) !important; }
+
+/* Custom Text Colors */
+.text-brand-primary { color: var(--brand-primary) !important; }
+.text-brand-secondary { color: var(--brand-secondary) !important; }
+.text-brand-light { color: var(--brand-light) !important; }
+
+/* Primary Button (Deep Green) */
+.btn-primary-custom {
+    background-color: var(--brand-secondary);
+    color: #FFFFFF; /* White text for contrast */
+    border: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-primary-custom:hover {
+    background-color: var(--brand-accent);
+    color: #FFFFFF;
+}
+
+/* Outline Button */
+.btn-outline-custom {
+    border: 2px solid var(--brand-secondary);
+    color: var(--brand-secondary);
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-custom:hover {
+    background-color: var(--brand-secondary);
+    color: #FFFFFF;
+}
+
+/* Form Inputs */
+.form-control-custom {
+    border: 1px solid var(--brand-light);
+}
+
+.form-control-custom:focus {
+    border-color: var(--brand-accent);
+    box-shadow: 0 0 0 0.25rem rgba(42, 131, 95, 0.25); /* Mid Green glow */
+}
+
+/* Product Card Hover */
+.product-card {
+    background-color: var(--brand-card-bg);
+    transition: transform 0.2s, box-shadow 0.2s;
+    border-radius: 12px; 
+    overflow: hidden;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 .5rem 1rem rgba(9, 35, 40, 0.15) !important; /* Deep Teal shadow */
+}

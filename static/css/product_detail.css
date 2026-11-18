@@ -1,0 +1,150 @@
+/* ==========================================
+   PRODUCT DETAIL PAGE STYLES
+   ========================================== */
+
+/* Image Container */
+.product-image-container {
+    background-color: var(--brand-bg);
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+}
+
+.product-image-container img {
+    width: 100%;
+    height: auto;
+    max-height: 550px;
+    object-fit: contain; /* Ensures the whole product is visible without cropping */
+    transition: transform 0.4s ease;
+}
+
+.product-image-container:hover img {
+    transform: scale(1.03); /* Subtle zoom on hover */
+}
+
+/* Breadcrumbs */
+.breadcrumb {
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: "/";
+    color: var(--brand-light);
+}
+
+/* Product Title */
+.product-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--brand-primary);
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+}
+
+/* Wholesaler Tag */
+.wholesaler-tag {
+    display: inline-block;
+    background-color: var(--brand-bg);
+    color: var(--brand-secondary);
+    padding: 4px 12px;
+    border-radius: 50rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--brand-light);
+}
+
+/* Price */
+.product-price {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--brand-secondary);
+    margin-bottom: 1.5rem;
+}
+
+/* Description */
+.product-description {
+    color: #6c757d;
+    line-height: 1.7;
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
+}
+
+/* Variant Buttons (Radio Labels) */
+.variant-label {
+    border: 2px solid var(--brand-light) !important;
+    color: var(--brand-primary);
+    background-color: transparent;
+    border-radius: 50rem !important;
+    padding: 0.5rem 1.25rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.variant-label:hover {
+    background-color: var(--brand-bg);
+    border-color: var(--brand-primary) !important;
+}
+
+/* When the radio button is checked, style the label */
+.btn-check:checked + .variant-label {
+    background-color: var(--brand-secondary) !important;
+    color: #ffffff !important;
+    border-color: var(--brand-secondary) !important;
+    box-shadow: 0 4px 10px rgba(18, 84, 79, 0.2);
+}
+
+/* Add to Cart Button */
+.btn-add-cart {
+    background-color: var(--brand-secondary);
+    color: #ffffff;
+    font-weight: 600;
+    border-radius: 50rem;
+    padding: 0.8rem 2rem;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.btn-add-cart:hover {
+    background-color: var(--brand-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(18, 84, 79, 0.2);
+    color: #ffffff;
+}
+
+/* WhatsApp Button */
+.btn-whatsapp {
+    background-color: #ffffff;
+    color: var(--brand-primary);
+    border: 2px solid var(--brand-light);
+    font-weight: 600;
+    border-radius: 50rem;
+    padding: 0.8rem 2rem;
+    transition: all 0.3s ease;
+}
+
+.btn-whatsapp:hover {
+    background-color: #25D366;
+    color: #ffffff;
+    border-color: #25D366;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(37, 211, 102, 0.2);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 767px) {
+    .product-title {
+        font-size: 1.7rem;
+    }
+    .product-price {
+        font-size: 1.6rem;
+    }
+    .btn-add-cart, 
+    .btn-whatsapp {
+        width: 100%;
+        padding: 0.8rem 1rem;
+    }
+}

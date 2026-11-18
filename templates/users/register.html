@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="row g-0">
+                    
+                    <!-- Left Side: Branding Banner (Hidden on mobile) -->
+                    <div class="col-md-5 d-none d-md-block position-relative" style="background-color: var(--brand-primary);">
+                        <!-- Decorative Circle -->
+                        <div class="position-absolute top-0 end-0 translate-middle-y rounded-circle" style="width: 200px; height: 200px; background: rgba(255,255,255,0.05);"></div>
+                        
+                        <div class="p-5 d-flex flex-column h-100 justify-content-center position-relative z-1 text-white">
+                            <h2 class="fw-bold mb-3 display-5">Join<br>Sokowan.</h2>
+                            <p class="mb-4" style="opacity: 0.8;">Create an account to track your orders, save your delivery details, and shop faster.</p>
+                            
+                            <ul class="list-unstyled mt-4">
+                                <li class="mb-3 d-flex align-items-center">
+                                    <i class="bi bi-check-circle-fill me-3 fs-5" style="color: var(--brand-light);"></i>
+                                    <span>Fast Checkout</span>
+                                </li>
+                                <li class="mb-3 d-flex align-items-center">
+                                    <i class="bi bi-check-circle-fill me-3 fs-5" style="color: var(--brand-light);"></i>
+                                    <span>Order Tracking</span>
+                                </li>
+                                <li class="d-flex align-items-center">
+                                    <i class="bi bi-check-circle-fill me-3 fs-5" style="color: var(--brand-light);"></i>
+                                    <span>Exclusive Deals</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Right Side: Registration Form -->
+                    <div class="col-md-7 bg-white p-4 p-md-5">
+                        <div class="mb-4 text-center text-md-start">
+                            <h3 class="fw-bold text-brand-primary mb-1">Create an Account</h3>
+                            <p class="text-muted small">Already have an account? <a href="{% url 'login' %}" class="text-brand-secondary fw-semibold text-decoration-none">Login here</a></p>
+                        </div>
+
+                        <form method="POST">
+                            {% csrf_token %}
+                            
+                            <!-- Form Errors -->
+                            {% if form.errors %}
+                            <div class="alert alert-danger rounded-3">
+                                <strong>Please fix the following errors:</strong>
+                                <ul class="mb-0 mt-2 small">
+                                {% for field in form %}
+                                    {% for error in field.errors %}
+                                        <li>{{ field.label }}: {{ error }}</li>
+                                    {% endfor %}
+                                {% endfor %}
+                                </ul>
+                            </div>
+                            {% endif %}
+
+                            <!-- Name Row -->
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label small fw-semibold text-muted">First Name</label>
+                                    {{ form.first_name }}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label small fw-semibold text-muted">Last Name</label>
+                                    {{ form.last_name }}
+                                </div>
+                            </div>
+
+                            <!-- Username -->
+                            <div class="mb-3">
+                                <label class="form-label small fw-semibold text-muted">Username</label>
+                                {{ form.username }}
+                                {% if form.username.help_text %}
+                                    <small class="text-muted d-block" style="font-size: 0.7rem;">{{ form.username.help_text }}</small>
+                                {% endif %}
+                            </div>
+
+                            <!-- Email -->
+                            <div class="mb-3">
+                                <label class="form-label small fw-semibold text-muted">Email Address</label>
+                                {{ form.email }}
+                            </div>
+
+                            <!-- Password Row -->
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label small fw-semibold text-muted">Password</label>
+                                    {{ form.password1 }}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label small fw-semibold text-muted">Confirm Password</label>
+                                    {{ form.password2 }}
+                                </div>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <button type="submit" class="btn btn-primary-custom w-100 rounded-pill py-3 mt-4 fw-bold shadow-sm">
+                                Create Account <i class="bi bi-arrow-right ms-1"></i>
+                            </button>
+                            
+                            <p class="text-center text-muted mt-3 mb-0" style="font-size: 0.75rem;">
+                                By registering, you agree to our Terms of Service and Privacy Policy.
+                            </p>
+                        </form>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

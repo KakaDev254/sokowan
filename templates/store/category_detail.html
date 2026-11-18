@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/category.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- Breadcrumbs -->
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-brand-secondary text-decoration-none">Home</a></li>
+        {% if category.parent %}
+            <li class="breadcrumb-item"><a href="{% url 'category_detail' category.parent.slug %}" class="text-brand-secondary text-decoration-none">{{ category.parent.name }}</a></li>
+        {% endif %}
+        <li class="breadcrumb-item active text-brand-primary" aria-current="page">{{ category.name }}</li>
+    </ol>
+</nav>
+
+<!-- Category Header -->
+<div class="category-header d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-brand-primary mb-0">{{ category.name }}</h2>
+    <!-- Note: products.paginator.count gets the total number of items across all pages -->
+    <span class="text-muted fw-semibold">{{ products.paginator.count }} items found</span>
+</div>
+
+<!-- White container background -->
+<div class="bg-white rounded-4 p-3 mb-4 shadow-sm">
+    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-2 g-md-3 category-grid">
+        {% for product in products %}
+            {% include 'store/includes/product_card.html' %}
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <h4 class="text-muted mb-3">No products found in this category.</h4>
+            <p class="mb-4">Check back later or browse our other categories.</p>
+            <a href="{% url 'home' %}" class="btn btn-primary-custom px-4 rounded-pill">Back to Home</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Pagination Controls -->
+{% if products.has_other_pages %}
+<nav aria-label="Page navigation" class="d-flex justify-content-center mt-4 mb-5">
+    <ul class="pagination pagination-md shadow-sm">
+        
+        <!-- Previous Button -->
+        {% if products.has_previous %}
+            <li class="page-item">
+                <a class="page-link text-brand-primary" href="?page={{ products.previous_page_number }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo; Prev</span>
+                </a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">&laquo; Prev</span>
+            </li>
+        {% endif %}
+
+        <!-- Page Numbers -->
+        {% for num in products.paginator.page_range %}
+            {% if products.number == num %}
+                <li class="page-item active" aria-current="page">
+                    <span class="page-link bg-brand-primary border-brand-primary text-white">{{ num }}</span>
+                </li>
+            {% elif num > products.number|add:'-3' and num < products.number|add:'3' %}
+                <!-- Only show numbers close to the current page to avoid a massive list -->
+                <li class="page-item">
+                    <a class="page-link text-brand-primary" href="?page={{ num }}">{{ num }}</a>
+                </li>
+            {% endif %}
+        {% endfor %}
+
+        <!-- Next Button -->
+        {% if products.has_next %}
+            <li class="page-item">
+                <a class="page-link text-brand-primary" href="?page={{ products.next_page_number }}" aria-label="Next">
+                    <span aria-hidden="true">Next &raquo;</span>
+                </a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">Next &raquo;</span>
+            </li>
+        {% endif %}
+
+    </ul>
+</nav>
+{% endif %}
+
+{% endblock %}

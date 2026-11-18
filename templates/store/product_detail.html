@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/product_detail.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container py-2">
+    <div class="row">
+        <!-- ========================================== -->
+        <!-- LEFT COLUMN: IMAGE GALLERY                 -->
+        <!-- ========================================== -->
+        <div class="col-lg-6 mb-4">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden position-relative">
+                <!-- Admin Edit/View Tag -->
+                {% if request.user.is_staff %}
+                    <span class="position-absolute top-0 start-0 m-3 badge bg-danger text-white z-3">
+                        Admin View
+                    </span>
+                {% endif %}
+                
+                <div class="product-image-container bg-white d-flex align-items-center justify-content-center" style="min-height: 450px; padding: 20px;">
+                    {% if main_image %}
+                        <img src="{{ main_image.image.url }}" alt="{{ product.name }}" class="img-fluid" style="max-height: 500px; object-fit: contain;">
+                    {% else %}
+                        <div class="text-muted d-flex flex-column align-items-center">
+                            <i class="bi bi-image" style="font-size: 3rem;"></i>
+                            <span class="mt-2">No Image Available</span>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Optional: Thumbnails (If you add multiple images later) -->
+            <div class="d-flex gap-2 mt-3 overflow-auto pb-2">
+                {% for img in product.images.all %}
+                    <div class="border rounded-3 overflow-hidden" style="width: 80px; height: 80px; flex-shrink: 0; cursor: pointer;">
+                        <img src="{{ img.image.url }}" class="w-100 h-100" style="object-fit: cover;" alt="Thumbnail">
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- RIGHT COLUMN: PRODUCT DETAILS              -->
+        <!-- ========================================== -->
+        <div class="col-lg-6 px-lg-5">
+            <!-- Breadcrumbs -->
+            <nav aria-label="breadcrumb" class="mb-3">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-brand-secondary text-decoration-none">Home</a></li>
+                    {% for cat in product.categories.all %}
+                        <li class="breadcrumb-item"><a href="{% url 'category_detail' cat.slug %}" class="text-brand-secondary text-decoration-none">{{ cat.name }}</a></li>
+                    {% endfor %}
+                </ol>
+            </nav>
+
+            <!-- Product Title -->
+            <h1 class="fw-bold text-brand-primary mb-2" style="font-size: 2rem; line-height: 1.2;">{{ product.name }}</h1>
+            
+            <!-- Admin Only: Wholesaler Info -->
+            {% if request.user.is_staff %}
+                <div class="mb-3">
+                    <span class="badge bg-danger bg-opacity-10 text-danger border border-danger px-3 py-2 rounded-pill">
+                        <i class="bi bi-shield-lock me-1"></i> Wholesaler: {{ product.wholesaler.name }}
+                    </span>
+                </div>
+            {% endif %}
+
+            <!-- Price & Availability -->
+            <div class="d-flex align-items-center gap-3 mb-4">
+                <h2 class="text-brand-primary fw-bold mb-0" style="font-size: 2.2rem;">KES {{ product.base_price|floatformat:0 }}</h2>
+                {% if product.variants.first.stock > 0 %}
+                    <span class="badge bg-success bg-opacity-10 text-success border border-success rounded-pill px-3">In Stock</span>
+                {% else %}
+                    <span class="badge bg-danger bg-opacity-10 text-danger border border-danger rounded-pill px-3">Out of Stock</span>
+                {% endif %}
+            </div>
+            
+            <!-- Description -->
+            <p class="text-muted mb-4" style="line-height: 1.7; font-size: 1rem;">{{ product.description }}</p>
+
+            <hr class="my-4" style="border-color: #eaeaea;">
+
+            <!-- Add to Cart Form -->
+            <form action="{% url 'cart_add' product.id %}" method="post">
+                {% csrf_token %}
+                
+                <!-- Variants Section -->
+                {% if product.variants.all %}
+                <div class="mb-4">
+                    <h6 class="fw-bold text-brand-primary mb-3">Select Option:</h6>
+                    <div class="d-flex flex-wrap gap-2">
+                        {% for variant in product.variants.all %}
+                            <input type="radio" class="btn-check" name="variant_id" id="variant_{{ variant.id }}" value="{{ variant.id }}" {% if forloop.first %}checked{% endif %} required>
+                            <label class="variant-label" for="variant_{{ variant.id }}">
+                                {{ variant.name }}: {{ variant.value }} 
+                                {% if variant.price_adjustment > 0 %}
+                                    <span class="fw-bold">(+ KES {{ variant.price_adjustment|floatformat:0 }})</span>
+                                {% endif %}
+                            </label>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% else %}
+                    <input type="hidden" name="variant_id" value="{{ product.id }}">
+                {% endif %}
+
+                <!-- Action Buttons -->
+                <div class="d-grid gap-3 mt-4">
+                    <!-- Add to Cart Button -->
+                    <button type="submit" class="btn btn-primary-custom btn-lg rounded-pill py-3 fw-bold shadow-sm d-flex justify-content-center align-items-center">
+                        <i class="bi bi-cart-plus me-2 fs-5"></i> Add to Cart
+                    </button>
+                    
+                    <!-- WhatsApp Order Button -->
+                    <a href="https://wa.me/254796956134?text=Hi+Sokowan,+I+am+interested+in+buying+{{ product.name|urlencode }}+(KES+{{ product.base_price|floatformat:0 }})" target="_blank" class="btn btn-outline-success btn-lg rounded-pill py-3 fw-bold shadow-sm d-flex justify-content-center align-items-center">
+                        <i class="bi bi-whatsapp me-2 fs-5"></i> Order via WhatsApp
+                    </a>
+                </div>
+            </form>
+
+            <!-- Trust Badges -->
+            <div class="row g-2 mt-5 text-center">
+                <div class="col-4">
+                    <div class="p-2 border rounded-3 bg-light h-100">
+                        <i class="bi bi-truck fs-4 text-brand-secondary"></i>
+                        <p class="small mb-0 mt-1 fw-semibold">Fast Delivery</p>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="p-2 border rounded-3 bg-light h-100">
+                        <i class="bi bi-shield-check fs-4 text-brand-secondary"></i>
+                        <p class="small mb-0 mt-1 fw-semibold">Secure Checkout</p>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="p-2 border rounded-3 bg-light h-100">
+                        <i class="bi bi-arrow-counterclockwise fs-4 text-brand-secondary"></i>
+                        <p class="small mb-0 mt-1 fw-semibold">Easy Returns</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

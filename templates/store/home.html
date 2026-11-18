@@ -1,0 +1,263 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- ========================================== -->
+<!-- SEARCH BAR (Mobile First)                  -->
+<!-- ========================================== -->
+<div class="d-block d-md-none mb-3">
+    <!-- Linked to the search view -->
+    <form action="{% url 'search' %}" method="GET">
+        <div class="input-group bg-light rounded-pill overflow-hidden border">
+            <span class="input-group-text bg-light border-0 pe-1">🔍</span>
+            <input type="text" name="q" class="form-control bg-light border-0 shadow-none" placeholder="Search Sokowan..." style="font-size: 0.9rem;" required>
+        </div>
+    </form>
+</div>
+
+<!-- ========================================== -->
+<!-- HERO BANNERS (Center Only on Mobile)       -->
+<!-- ========================================== -->
+<div class="row g-2 g-md-3 mb-4">
+    <!-- LEFT (Hidden on mobile) -->
+    <div class="col-lg-3 d-none d-lg-block reveal-on-scroll">
+        <div class="hero-card rounded-3 position-relative overflow-hidden h-100 d-flex flex-column justify-content-end p-3" style="min-height: 300px; background-color: #092328;">
+            {% if banner_left.image %}
+                <img src="{{ banner_left.image.url }}" alt="{{ banner_left.title }}" class="position-absolute top-0 start-0 w-100 h-100" style="object-fit: cover; object-position: center 25%; z-index: 0;">
+            {% endif %}
+            <div class="position-absolute top-0 start-0 w-100 h-100 overlay-left" style="z-index: 1;"></div>
+            <div class="position-relative z-1">
+                <h4 class="text-white fw-bold mb-1">{{ banner_left.title }}</h4>
+                <a href="{{ banner_left.link }}" class="btn btn-sm bg-white text-brand-primary rounded-pill px-3 py-1 fw-bold mt-2" style="font-size: 0.75rem;">
+                    Shop Now
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- CENTER (Full width on mobile, shorter height) -->
+    <div class="col-12 col-lg-6 reveal-on-scroll">
+        <div class="hero-card hero-card-center rounded-3 position-relative overflow-hidden h-100 d-flex flex-column justify-content-end p-3 p-md-4" style="background-color: #12544F; min-height: 200px;">
+            {% if banner_center.image %}
+                <img src="{{ banner_center.image.url }}" alt="{{ banner_center.title }}" class="position-absolute top-0 start-0 w-100 h-100 hero-center-img" style="object-fit: cover; z-index: 0;">
+            {% endif %}
+            <div class="position-absolute top-0 start-0 w-100 h-100 overlay-center" style="z-index: 1;"></div>
+            <div class="position-relative w-100 w-lg-75 z-1">
+                <h3 class="text-white fw-bold mb-1 display-6 display-lg-5">{{ banner_center.title }}</h3>
+                <p class="mb-3 d-none d-md-block" style="color: var(--brand-light); font-size: 0.9rem;">{{ banner_center.subtitle }}</p>
+                <a href="{{ banner_center.link }}" class="btn btn-sm bg-white text-brand-primary rounded-pill px-4 py-1 fw-bold" style="font-size: 0.85rem;">
+                    Shop Now
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- RIGHT (Hidden on mobile) -->
+    <div class="col-lg-3 d-none d-lg-block reveal-on-scroll">
+        <div class="hero-card rounded-3 position-relative overflow-hidden h-100 d-flex flex-column justify-content-end p-3" style="min-height: 300px; background-color: #8BBB92;">
+            {% if banner_right.image %}
+                <img src="{{ banner_right.image.url }}" alt="{{ banner_right.title }}" class="position-absolute top-0 start-0 w-100 h-100" style="object-fit: cover; object-position: right 30%; z-index: 0;">
+            {% endif %}
+            <div class="position-absolute top-0 start-0 w-100 h-100 overlay-right" style="z-index: 1;"></div>
+            <div class="position-relative z-1">
+                <h4 class="text-white fw-bold mb-1">{{ banner_right.title }}</h4>
+                <a href="{{ banner_right.link }}" class="btn btn-sm bg-brand-primary text-white rounded-pill px-3 py-1 fw-bold mt-2" style="font-size: 0.75rem;">
+                    Shop Now
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========================================== -->
+<!-- HORIZONTAL SCROLLING CATEGORY MENU         -->
+<!-- ========================================== -->
+<div class="mb-4 reveal-on-scroll">
+    <div class="d-flex gap-3 overflow-auto pb-3 hide-scrollbar align-items-start pt-2">
+        {% for category in categories %}
+            <!-- Linked to the category_detail view -->
+            <a href="{% url 'category_detail' category.slug %}" class="text-decoration-none text-center flex-shrink-0" style="width: 75px;">
+                
+                <!-- Rounded Square Container -->
+                <div class="category-icon-wrapper mx-auto mb-2 d-flex align-items-center justify-content-center shadow-sm">
+                    {% if category.image %}
+                        <img src="{{ category.image.url }}" alt="{{ category.name }}" class="w-100 h-100" style="object-fit: cover; border-radius: 12px;">
+                    {% else %}
+                        <span class="fw-bold text-brand-primary" style="font-size: 1.2rem;">{{ category.name|slice:":1" }}</span>
+                    {% endif %}
+                </div>
+                
+                <!-- Text -->
+                <small class="text-brand-primary d-block text-truncate" style="font-size: 0.75rem; font-weight: 500;">{{ category.name }}</small>
+            </a>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- ========================================== -->
+<!-- PRODUCT GRID (Deals For You)               -->
+<!-- ========================================== -->
+<div class="bg-white rounded-4 p-3 mb-4 shadow-sm reveal-on-scroll">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-bold mb-0 text-brand-primary">Deals For You</h5>
+        <!-- Just a placeholder for now until we build an "All Products" page -->
+        <a href="#" class="btn btn-sm btn-warning text-white rounded-pill px-3 fw-bold d-flex align-items-center gap-1" style="font-size: 0.75rem;">
+            See All <i class="bi bi-arrow-right"></i> →
+        </a>
+    </div>
+
+    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-2 g-md-3">
+        {% for product in products %}
+            {% include 'store/includes/product_card.html' %}
+        {% empty %}
+        <div class="col-12 text-center py-4">
+            <h6 class="text-muted">No products found.</h6>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- ========================================== -->
+<!-- KITCHENWARE SPOTLIGHT SECTION              -->
+<!-- ========================================== -->
+{% if kitchen_products %}
+<!-- Pulling the category slug dynamically to avoid hardcoding -->
+{% with kitchen_cat=kitchen_products.0.categories.first %}
+<div class="rounded-4 p-3 p-md-4 mb-4 shadow-sm reveal-on-scroll" style="background-color: #FDFBF7; border: 1px solid #F0E6D2;">
+    
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-bold mb-0 text-brand-primary">Upgrade Your Kitchen</h5>
+        <!-- DYNAMIC LINK -->
+        <a href="{% url 'category_detail' kitchen_cat.slug %}" class="btn btn-sm btn-warning text-white rounded-pill px-3 fw-bold d-flex align-items-center gap-1" style="font-size: 0.75rem; background-color: #F28C28; border: none;">
+            See All <i class="bi bi-arrow-right"></i> →
+        </a>
+    </div>
+
+    <!-- Wide Top Banner for Kitchenware -->
+    <div class="kitchen-banner rounded-4 mb-3 position-relative overflow-hidden d-flex align-items-center p-4" style="min-height: 160px;">
+        <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(to right, rgba(9,35,40,0.85) 0%, rgba(9,35,40,0.1) 100%);"></div>
+        
+        <div class="position-relative z-1">
+            <h3 class="fw-bold text-white mb-1">Cook with Confidence.</h3>
+            <p class="text-light mb-3 d-none d-md-block" style="font-size: 0.9rem;">Premium utensils, pots, and appliances for your home.</p>
+            <a href="{% url 'category_detail' kitchen_cat.slug %}" class="btn btn-sm bg-brand-light text-brand-primary rounded-pill fw-bold px-4 py-2">
+                Shop Kitchenware
+            </a>
+        </div>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-2 g-md-3">
+        {% for product in kitchen_products|slice:":8" %}
+            {% include 'store/includes/product_card.html' %}
+        {% endfor %}
+    </div>
+
+</div>
+{% endwith %}
+{% endif %}
+
+<!-- ========================================== -->
+<!-- SPORTS SPOTLIGHT (2 Rows of 3 Products)    -->
+<!-- ========================================== -->
+{% if sports_products %}
+{% with sports_cat=sports_products.0.categories.first %}
+<div class="rounded-4 p-4 mb-4 shadow-sm reveal-on-scroll" style="background-color: #dcebe1; border: 2px solid #c3dac9;">
+    
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-bold mb-0 text-brand-primary" style="letter-spacing: 0.5px;">Sports Spotlight</h5>
+        <!-- DYNAMIC LINK -->
+        <a href="{% url 'category_detail' sports_cat.slug %}" class="btn btn-sm btn-dark rounded-pill px-3 fw-bold" style="font-size: 0.75rem;">View All →</a>
+    </div>
+
+    <div class="row g-3" style="min-height: 420px;">
+        
+        <!-- Left Side: Banner -->
+        <div class="col-md-4 d-none d-md-block">
+            <div class="sports-banner rounded-4 position-relative overflow-hidden d-flex flex-column justify-content-end p-4 h-100 shadow">
+                <div class="position-relative z-1">
+                    <h3 class="text-white fw-bold mb-1">Gear Up.</h3>
+                    <p class="text-light mb-3" style="opacity: 0.9; font-size: 0.85rem;">Top quality equipment for every game.</p>
+                    <!-- DYNAMIC LINK -->
+                    <a href="{% url 'category_detail' sports_cat.slug %}" class="btn btn-sm btn-warning text-white rounded-pill fw-bold px-4 py-2 align-self-start shadow-sm" style="background-color: #F28C28; border: none;">
+                        Shop Sports
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side: 2 Rows of 3 Products -->
+        <div class="col-md-8">
+            <div class="row row-cols-2 row-cols-md-3 g-2 h-100 sports-grid-row">
+                {% for product in sports_products|slice:":6" %}
+                    {% include 'store/includes/product_card.html' %}
+                {% endfor %}
+            </div>
+        </div>
+        
+    </div>
+</div>
+{% endwith %}
+{% endif %}
+
+<!-- ========================================== -->
+<!-- WATCHES SPOTLIGHT SECTION                  -->
+<!-- ========================================== -->
+{% if watches_products %}
+{% with watches_cat=watches_products.0.categories.first %}
+<div class="rounded-4 p-3 p-md-4 mb-4 shadow-sm reveal-on-scroll" style="background-color: #1a1c20; color: white;">
+    
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-bold mb-0">Timeless Elegance</h5>
+        <!-- DYNAMIC LINK -->
+        <a href="{% url 'category_detail' watches_cat.slug %}" class="btn btn-sm btn-outline-light rounded-pill px-3 fw-bold" style="font-size: 0.75rem;">View All →</a>
+    </div>
+
+    <!-- Top Wide Banner for Watches -->
+    <div class="watch-banner rounded-4 mb-3 position-relative overflow-hidden d-flex align-items-center p-4" style="min-height: 160px;">
+        <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(to right, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 100%);"></div>
+        
+        <div class="position-relative z-1">
+            <h3 class="fw-bold text-white mb-1">Make a Statement.</h3>
+            <p class="text-light mb-3 d-none d-md-block" style="font-size: 0.9rem;">Discover our premium collection of watches.</p>
+            <!-- DYNAMIC LINK -->
+            <a href="{% url 'category_detail' watches_cat.slug %}" class="btn btn-sm btn-light text-dark rounded-pill fw-bold px-4 py-2">
+                Shop Watches
+            </a>
+        </div>
+    </div>
+
+    <!-- Product Grid (3 per row) -->
+    <div class="row row-cols-2 row-cols-md-3 g-2 g-md-3">
+        {% for product in watches_products %}
+            {% include 'store/includes/product_card.html' %}
+        {% endfor %}
+    </div>
+
+</div>
+{% endwith %}
+{% endif %}
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Scroll Animations
+    document.addEventListener("DOMContentLoaded", function() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) entry.target.classList.add('is-visible');
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal-on-scroll').forEach((el) => {
+            observer.observe(el);
+        });
+    });
+</script>
+{% endblock %}

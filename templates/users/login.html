@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center align-items-center" style="min-height: 70vh;">
+        <div class="col-lg-9">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="row g-0">
+                    
+                    <!-- Left Side: Branding Banner -->
+                    <div class="col-md-5 d-none d-md-block position-relative" style="background-color: var(--brand-primary);">
+                        <!-- Decorative Circle -->
+                        <div class="position-absolute bottom-0 start-0 translate-middle-x rounded-circle" style="width: 250px; height: 250px; background: rgba(255,255,255,0.05);"></div>
+                        
+                        <div class="p-5 d-flex flex-column h-100 justify-content-center position-relative z-1 text-white">
+                            <h2 class="fw-bold mb-3 display-5">Welcome<br>Back.</h2>
+                            <p class="mb-0" style="opacity: 0.8;">Sign in to access your orders, wishlist, and saved delivery addresses.</p>
+                            
+                            <div class="mt-5">
+                                <img src="{% static 'images/logo.png' %}" alt="Sokowan" style="height: 50px; filter: brightness(0) invert(1);">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Side: Login Form -->
+                    <div class="col-md-7 bg-white p-4 p-md-5">
+                        <div class="mb-4 text-center text-md-start">
+                            <h3 class="fw-bold text-brand-primary mb-1">Login to Sokowan</h3>
+                            <p class="text-muted small">Don't have an account? <a href="{% url 'register' %}" class="text-brand-secondary fw-semibold text-decoration-none">Create one here</a></p>
+                        </div>
+
+                        <form method="POST">
+                            {% csrf_token %}
+                            
+                            <!-- Form Errors -->
+                            {% if form.errors %}
+                            <div class="alert alert-danger rounded-3">
+                                <i class="bi bi-exclamation-triangle-fill me-2"></i> Invalid username or password. Please try again.
+                            </div>
+                            {% endif %}
+
+                            <!-- Username Input -->
+                            <div class="mb-3">
+                                <label class="form-label small fw-semibold text-muted">Username</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0"><i class="bi bi-person text-muted"></i></span>
+                                    {{ form.username }}
+                                </div>
+                            </div>
+
+                            <!-- Password Input -->
+                            <div class="mb-3">
+                                <label class="form-label small fw-semibold text-muted">Password</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0"><i class="bi bi-lock text-muted"></i></span>
+                                    {{ form.password }}
+                                </div>
+                            </div>
+
+                            <!-- Remember Me & Forgot Password -->
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="rememberMe" checked>
+                                    <label class="form-check-label small text-muted" for="rememberMe">
+                                        Remember me
+                                    </label>
+                                </div>
+                                <a href="#" class="text-brand-secondary small text-decoration-none fw-semibold">Forgot Password?</a>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <button type="submit" class="btn btn-primary-custom w-100 rounded-pill py-3 fw-bold shadow-sm">
+                                Sign In <i class="bi bi-box-arrow-in-right ms-1"></i>
+                            </button>
+                        </form>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
